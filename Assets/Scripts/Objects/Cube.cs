@@ -35,9 +35,9 @@ public class Cube : MonoBehaviour, IDestructible, IInteractable
 
         if (stacked != null)
         {
-            GameObject top = stacked.GetFirst();
-
-            if (top.GetComponent<Player>() != null) // if is interacted not by Player or Player's "Cube tower"
+            Player player = stacked.GetFirst().GetComponent<Player>();
+            //if (top.GetComponent<Player>() != null) // if is interacted not by Player or Player's "Cube tower"
+            if (player == null) // if is interacted not by Player or Player's "Cube tower"
             {
                 return;
             }

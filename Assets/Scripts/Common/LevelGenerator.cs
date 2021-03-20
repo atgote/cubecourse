@@ -166,6 +166,10 @@ public class LevelGenerator : MonoBehaviour
                         type = 'a';
                         CreateObject('.', pos);
                     }
+                    else if (type == '*')
+                    {
+                        CreateObject('.', pos);
+                    }
                     
                     GameObject inst = null;
                     for (int i = 0; i < num; ++i)
