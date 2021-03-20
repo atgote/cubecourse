@@ -1,12 +1,18 @@
+// 2021.03.20 Tihonovschi Andrei
+// Stacked component
+// Allows objects to "stack"
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Stacked : MonoBehaviour
 {
+    // double-linked list
     GameObject nextUp = null;
     GameObject nextDown = null;
 
+    // get item at the bottom
     public GameObject GetLast()
     {
         GameObject last = null;
@@ -21,6 +27,7 @@ public class Stacked : MonoBehaviour
         return last;
     }
 
+    // get item at the top
     public GameObject GetFirst()
     {
         GameObject first = null;
@@ -35,6 +42,7 @@ public class Stacked : MonoBehaviour
         return first;
     }
 
+    // unstack (slice) items
     public void Unstack(GameObject other)
     {
         if (nextDown == other)
@@ -43,6 +51,7 @@ public class Stacked : MonoBehaviour
         }
     }
 
+    // stack items (or another stack of items)
     public void Stack(GameObject other)
     {
         if (other == null)
@@ -59,11 +68,13 @@ public class Stacked : MonoBehaviour
         }
     }
 
+    // upper element accessor
     public GameObject GetUpper()
     {
         return nextUp;
     }
 
+    // lower element accessor
     public GameObject GetLower()
     {
         return nextDown;

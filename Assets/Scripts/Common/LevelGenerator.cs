@@ -1,3 +1,7 @@
+// 2021.03.20 Tihonovschi Andrei
+// LevelGenerator component
+// allows loading and dynamically building levels
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,16 +26,18 @@ public class LevelGenerator : MonoBehaviour
             return;
         }
 
-        string[] level_data = LoadLevel(Game.GetLevel());
-        if (level_data == null)
+        string[] level_data = LoadLevel(Game.GetLevel()); // try to load current game level data
+        if (level_data == null) // if failed - return to menu
         {
             SceneManager.LoadScene("Menu");
             return;
         }
 
+        // build level scene
         GenerateLevel(level_data);
     }
 
+    // Load prefabs (object templates)
     bool LoadResources()
     {
         ice = Resources.Load("Prefabs/Ice") as GameObject;
@@ -74,22 +80,25 @@ public class LevelGenerator : MonoBehaviour
         return true;
     }
 
+    // Load level data
     string[] LoadLevel(int level)
     {
+        // Level files should be named as "level_xx.txt" and placed in "Levels" folder
         string resource_name = "Levels/level_" + level.ToString("D2");
-
         TextAsset data = Resources.Load(resource_name) as TextAsset;
-        if (data == null)
+        if (data == null) // failed?
         {
             return null;
         }
 
+        // parse to string array
         string[] level_data = data.text.Split(new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None);
 
         return level_data;
     }
 
+    // create objects by type (character identifying object type)
     GameObject CreateObject(int type, Vector3 pos) 
     {
         GameObject inst = null;
@@ -120,6 +129,14 @@ public class LevelGenerator : MonoBehaviour
         return inst;
     }
 
+    // This method builds scene parsing string level data
+    // the level file consists of rows of 5 characters each
+    // Every character in a row means:
+    // .        - will create an empty "Ice" block - clear road
+    // #        - will create a fire / lava block
+    // *        - will create an Ice block with a crystal on top of it 
+    // 0-9 (N)  - will create a block-tower with N blocks in height (10 if N=0)
+    // a-j (N)  - will create a cube-tower with N cubes in height (1 for a, 10 for j)
     void GenerateLevel(string[] level_data)
     {
         Vector3 pos = new Vector3(0, 0, 0);
@@ -149,15 +166,12 @@ public class LevelGenerator : MonoBehaviour
                         type = 'a';
                         CreateObject('.', pos);
                     }
-                    else if (type == '*' || type == '&')
-                    {
-                        CreateObject('.', pos);
-                    }
                     
                     GameObject inst = null;
                     for (int i = 0; i < num; ++i)
                     {
                         GameObject ninst = CreateObject(type, pos);
+                        // cubes will be stacked
                         if (type == 'a')
                         {
                             ninst.GetComponent<Stacked>().Stack(inst);

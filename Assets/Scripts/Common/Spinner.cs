@@ -1,3 +1,7 @@
+// 2021.03.20 Tihonovschi Andrei
+// Spinner component
+// Makes the object in scene spinning
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

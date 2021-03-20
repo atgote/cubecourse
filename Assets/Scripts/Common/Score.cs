@@ -1,3 +1,6 @@
+// 2021.03.20 Tihonovschi Andrei
+// Score display
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +8,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
+    // Text UI element
     [SerializeField] Text _text = null;
 
     // Start is called before the first frame update
@@ -16,7 +20,7 @@ public class Score : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    // Receive score increase (from collector(s))
     public void Increase(int s)
     {
         Game.ScoreIncrease(s);
